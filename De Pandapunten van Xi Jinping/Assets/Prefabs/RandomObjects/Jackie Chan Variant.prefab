@@ -77,7 +77,11 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 193eeb10330825d4d968cbd381c0ebe1, type: 3}
     - target: {fileID: 5602433101015844027, guid: ba4e3a19eceb76543bc6da02b8b8a0ea, type: 3}
       propertyPath: m_Name
-      value: Jackie Chan
+      value: Jackie Chan Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 5602433101015844027, guid: ba4e3a19eceb76543bc6da02b8b8a0ea, type: 3}
+      propertyPath: m_TagString
+      value: RandomObject
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba4e3a19eceb76543bc6da02b8b8a0ea, type: 3}

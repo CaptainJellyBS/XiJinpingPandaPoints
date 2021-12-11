@@ -174,4 +174,9 @@ public class Utility : ScriptableObject
     {
         Application.Quit();
     }
+
+    public void OpenWebpage(string url)
+    {
+        Application.OpenURL(url);
+    }
 }

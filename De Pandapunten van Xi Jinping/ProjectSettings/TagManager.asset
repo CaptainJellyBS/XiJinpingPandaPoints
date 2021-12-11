@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - CoverObject
+  - Atrocity
+  - RandomObject
   layers:
   - Default
   - TransparentFX

@@ -9,11 +9,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3557884814786938551, guid: 48f86102d1ca3ee48be126eb70c1e690, type: 3}
       propertyPath: m_Name
-      value: Hong Kong Desk
+      value: Hong Kong Desk Variant
       objectReference: {fileID: 0}
     - target: {fileID: 3557884814786938551, guid: 48f86102d1ca3ee48be126eb70c1e690, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3557884814786938551, guid: 48f86102d1ca3ee48be126eb70c1e690, type: 3}
+      propertyPath: m_TagString
+      value: Atrocity
       objectReference: {fileID: 0}
     - target: {fileID: 3557884814786938552, guid: 48f86102d1ca3ee48be126eb70c1e690, type: 3}
       propertyPath: m_Size.x

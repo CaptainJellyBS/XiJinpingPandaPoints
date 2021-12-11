@@ -8,11 +8,21 @@ public class GameManager : MonoBehaviour
     [Header("UI Elements")]
     public Text hoverText;
     public Text atrocityCounterText, timerText, postersLeftText, plushiesLeftText;
+    public Image fade;
 
+    [Header("Game Over UI Elements")]
+    public Image gameOverPanel;
+    public Text goText0, goText1, goText2, goText3;
+    public GameObject goButton;
+    
+    [Header("Win UI Elements")]
+    public Image winPanel;
+    public Text winText0, winText1, winText2, winText3;
+    public GameObject winButton;
 
     int atrocitiesCovered;
     
-    int amountOfPosters, amountOfPlushies, amountOfAtrocities, timer;
+    int amountOfPosters, amountOfPlushies, amountOfAtrocities, timer;    
 
     public int AtrocitiesCovered
     {
@@ -43,10 +53,21 @@ public class GameManager : MonoBehaviour
         set { timer = value; timerText.text = timer.ToString(); }
     }
 
+    int penaltyPlushies, penaltyPosters;
+
     SpawnManager spawnManager; DialogueManager dialogueManager; Tutorial tutorial;
 
     [Header("Dialogue")]
-    public Dialogue introDialogue;
+    public Dialogue[] introDialogues;
+    public Dialogue[] randomEndDialogues;
+
+    [Header("Difficulties")]
+    public int[] atrocities;
+    public int[] randomObjects;
+    public int[] timers;
+
+    bool gameOver;
+    public bool canPlace;
 
     public static GameManager Instance { get; private set; }
 
@@ -59,36 +80,82 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         Timer = 20; AmountOfAtrocities = 0; AmountOfPlushies = 0; AmountOfPosters = 0;
+        penaltyPlushies = 0; penaltyPosters = 0;
+        gameOver = false;
         spawnManager = GetComponent<SpawnManager>();
         dialogueManager = GetComponent<DialogueManager>();
         tutorial = GetComponent<Tutorial>();
         SetHoverTextVisible(false);
-        StartCoroutine(TutorialC());
+        StartCoroutine(GameLoop());
 
     }
 
-    IEnumerator TutorialC()
+    IEnumerator GameLoop()
     {
         //Intro Dialogue
-        yield return dialogueManager.PlayDialogue(introDialogue);
+        yield return dialogueManager.PlayDialogue(introDialogues[0]);
         yield return tutorial.PlayTutorial(0);
-        StartCoroutine(ContinuousLevelSpawn());
+        yield return dialogueManager.PlayDialogue(Utility.Pick(randomEndDialogues));
+        yield return QuickFade();
+
+        yield return dialogueManager.PlayDialogue(introDialogues[1]);
+        yield return tutorial.PlayTutorial(1);
+        yield return dialogueManager.PlayDialogue(Utility.Pick(randomEndDialogues));
+        yield return QuickFade();
+
+        yield return dialogueManager.PlayDialogue(introDialogues[2]);
+        yield return tutorial.PlayTutorial(2);
+        yield return dialogueManager.PlayDialogue(Utility.Pick(randomEndDialogues));
+        yield return QuickFade();
+
+        yield return StartCoroutine(ContinuousLevelSpawn());
+
+        if (gameOver) { yield return StartCoroutine(GameOverC()); }
+        else { yield return StartCoroutine(WinC()); }
     }
 
     IEnumerator ContinuousLevelSpawn()
     {
-        int a = 1; int ro = 2; int t = 20; int c = 0;
-        while(true)
+        int prevPosters = AmountOfPosters, prevPlushies = AmountOfPlushies;
+        for (int c = 0; c < timers.Length && c < atrocities.Length && c < randomObjects.Length ; c++)
         {
-            SpawnNewLevel(a, ro);
-            while (AtrocitiesCovered < AmountOfAtrocities && Timer>=0) { yield return new WaitForSeconds(1.0f); Timer--; }
+            Timer = timers[c];
+            penaltyPlushies = 0; penaltyPosters = 0;
+            AmountOfPosters = prevPosters; AmountOfPlushies = prevPlushies; //Weird shit
+            SpawnNewLevel(atrocities[c], randomObjects[c]);
 
-            if (AtrocitiesCovered < AmountOfAtrocities) { Debug.Log("Ya fucked up!"); }
-            else { a++; ro++; c++; if (c % 3 == 0) { t -= 2; } } //Fix this
+            while (AtrocitiesCovered < AmountOfAtrocities && Timer>=0 && (AmountOfPlushies > 0 || AmountOfPosters > 0)) { yield return new WaitForSeconds(1.0f); Timer--; }
+
+            if (AtrocitiesCovered < AmountOfAtrocities) 
+            {
+                AmountOfPlushies = prevPlushies; AmountOfPosters = prevPosters;
+
+                List<string> uncoveredAtrocities = new List<string>();
+                foreach (GameObject go in GameObject.FindGameObjectsWithTag("Atrocity"))
+                {
+                    if (go.GetComponent<CoverableObject>().enabled) { uncoveredAtrocities.Add(go.GetComponent<TextOnHover>().text); }
+                }
+
+                foreach(string s in uncoveredAtrocities)
+                {
+                    yield return dialogueManager.PlayCaughtDialogue(s);
+                    if (gameOver) { yield break; }
+                }
+
+                prevPosters -= penaltyPosters;
+                prevPlushies -= penaltyPlushies;
+                c--;
+            }
+            else { prevPosters = AmountOfPosters; prevPlushies = AmountOfPlushies; dialogueManager.currentPenalty = 0; }
             
-            yield return new WaitForSeconds(2.0f);
-            Timer = t;
+            yield return dialogueManager.PlayDialogue(Utility.Pick(randomEndDialogues));
+            yield return QuickFade();
         }
+    }
+
+    public void GameOver()
+    {
+        gameOver = true;
     }
 
     public void SetHoverText(string content, bool vis = true)
@@ -100,6 +167,16 @@ public class GameManager : MonoBehaviour
     public void SetHoverTextVisible(bool vis)
     {
         hoverText.transform.parent.gameObject.SetActive(vis);
+    }
+
+    public void IncreasePosterPenalty()
+    {
+        penaltyPosters++;
+    }
+
+    public void IncreasePlushiePenalty()
+    {
+        penaltyPlushies++;
     }
 
     public void ScoreAtrocity(CoverableObject atrocity)
@@ -132,5 +209,147 @@ public class GameManager : MonoBehaviour
         AmountOfAtrocities = _atrocities;
         AtrocitiesCovered = 0;
         spawnManager.SpawnNewLevel(_atrocities, _randomObjects);
+    }
+
+    public Coroutine QuickFade()
+    {
+        return StartCoroutine(QuickFadeC());
+    }
+
+    public void QuickFadeEvent()
+    {
+        StartCoroutine(QuickFadeC());
+    }
+
+    public IEnumerator QuickFadeC()
+    {
+        fade.gameObject.SetActive(true);
+        float t = 0;
+        while (t < 1.0f)
+        {
+            fade.color = Color.Lerp(Color.clear, Color.black, t);
+            t += Time.deltaTime * 2;
+            yield return null;
+        }
+
+        t = 0;
+        while (t < 1.0f)
+        {
+            fade.color = Color.Lerp(Color.black, Color.clear, t);
+            t += Time.deltaTime * 2;
+            yield return null;
+        }
+
+
+
+        fade.gameObject.SetActive(false);
+    }
+
+    IEnumerator GameOverC()
+    {
+        gameOverPanel.gameObject.SetActive(true);
+        gameOverPanel.color = Color.clear;
+        goText0.color = Color.clear;
+        goText1.color = Color.clear;
+        goText2.color = Color.clear;
+        goText3.color = Color.clear;
+
+        goButton.SetActive(false);
+
+        float t = 0;
+        while (t <= 0.8f)
+        {
+            gameOverPanel.color = Color.Lerp(Color.clear, Color.black, t);
+            t += Time.deltaTime / 2.5f; yield return null;
+        }
+
+        t = 0.0f;
+        while (t <= 0.8f)
+        {
+            gameOverPanel.color = Color.Lerp(Color.clear, Color.black, t + 0.8f);
+            goText0.color = Color.Lerp(Color.clear, Color.white, t);
+            t += Time.deltaTime / 2.5f; yield return null;
+        }
+        
+        t = 0.0f;
+        while (t <= 0.8f)
+        {
+            goText0.color = Color.Lerp(Color.clear, Color.white, t+0.8f);
+            goText1.color = Color.Lerp(Color.clear, Color.white, t);
+            t += Time.deltaTime / 2.5f; yield return null;
+        } 
+        
+        t = 0.0f;
+        while (t <= 0.8f)
+        {
+            goText1.color = Color.Lerp(Color.clear, Color.white, t+0.8f);
+            goText2.color = Color.Lerp(Color.clear, Color.white, t);
+            t += Time.deltaTime / 2.5f; yield return null;
+        }
+        
+        t = 0.0f;
+        while (t <= 1.0f)
+        {
+            goText2.color = Color.Lerp(Color.clear, Color.white, t+0.8f);
+            goText3.color = Color.Lerp(Color.clear, Color.white, t);
+            t += Time.deltaTime / 2.5f; yield return null;
+        }
+
+        yield return new WaitForSeconds(1.0f);
+        goButton.SetActive(true);
+    }
+
+    IEnumerator WinC()
+    {
+        winPanel.gameObject.SetActive(true);
+        winPanel.color = Color.clear;
+        winText0.color = Color.clear;
+        winText1.color = Color.clear;
+        winText2.color = Color.clear;
+        winText3.color = Color.clear;
+
+        winButton.SetActive(false);
+
+        float t = 0;
+        while (t <= 0.8f)
+        {
+            winPanel.color = Color.Lerp(Color.clear, Color.black, t);
+            t += Time.deltaTime / 2.5f; yield return null;
+        }
+
+        t = 0.0f;
+        while (t <= 0.8f)
+        {
+            winPanel.color = Color.Lerp(Color.clear, Color.black, t + 0.8f);
+            winText0.color = Color.Lerp(Color.clear, Color.white, t);
+            t += Time.deltaTime / 2.5f; yield return null;
+        }
+
+        t = 0.0f;
+        while (t <= 0.8f)
+        {
+            winText0.color = Color.Lerp(Color.clear, Color.white, t + 0.8f);
+            winText1.color = Color.Lerp(Color.clear, Color.white, t);
+            t += Time.deltaTime / 2.5f; yield return null;
+        }
+
+        t = 0.0f;
+        while (t <= 0.8f)
+        {
+            winText1.color = Color.Lerp(Color.clear, Color.white, t + 0.8f);
+            winText2.color = Color.Lerp(Color.clear, Color.white, t);
+            t += Time.deltaTime / 2.5f; yield return null;
+        }
+
+        t = 0.0f;
+        while (t <= 1.0f)
+        {
+            winText2.color = Color.Lerp(Color.clear, Color.white, t + 0.8f);
+            winText3.color = Color.Lerp(Color.clear, Color.white, t);
+            t += Time.deltaTime / 2.5f; yield return null;
+        }
+
+        yield return new WaitForSeconds(1.0f);
+        winButton.SetActive(true);
     }
 }

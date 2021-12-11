@@ -18,7 +18,7 @@ public class ObjectArea : MonoBehaviour
     {
         if(Input.GetMouseButton(0))
         {
-            if (GameManager.Instance.GetCoverupAmount(coverType) <= 0) { return; }
+            if (GameManager.Instance.GetCoverupAmount(coverType) <= 0 || !GameManager.Instance.canPlace) { return; }
 
             preview.SetActive(true);
             transform.position = Vector3.Scale(transform.position, new Vector3(1, 1, 0)) + new Vector3(0, 0, -0.05f);
@@ -27,7 +27,7 @@ public class ObjectArea : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (GameManager.Instance.GetCoverupAmount(coverType) <= 0) { return; }
+        if (GameManager.Instance.GetCoverupAmount(coverType) <= 0 || !GameManager.Instance.canPlace) { return; }
 
         preview.SetActive(true);
         transform.position = Vector3.Scale(transform.position, new Vector3(1, 1, 0)) + new Vector3(0, 0, -0.05f);
@@ -43,7 +43,7 @@ public class ObjectArea : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(0))
         {
-            if(GameManager.Instance.GetCoverupAmount(coverType) <= 0) { return; }
+            if(GameManager.Instance.GetCoverupAmount(coverType) <= 0 || !GameManager.Instance.canPlace) { return; }
             Instantiate(toPlace, Utility.MousePosTwoD() + new Vector3(0, 0, -0.025f), Quaternion.identity);
             GameManager.Instance.AddCoverup(coverType);
             preview.SetActive(false);

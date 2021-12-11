@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d7dd684973464f4693b5c5662123864, type: 3}
+  m_Name: IntroDialogue1
+  m_EditorClassIdentifier: 
+  Content:
+  - Well Xi my darling, I better go.
+  - The Whole World is about to visit again, and they better not find out we're fucking.
+  - By the way, that Uyghur Internment Camp you can see from the window? You probably
+    want to cover that up...
+  - Why don't you use that massive panda plushie!
+  - Well I can't wait to ride my Pooh Bear again, but I really have to go now!
+  Speakers: 0100000001000000010000000100000001000000
+  SpeakerAmount: 1
+  SpeakerOneName: Vladimir Putin
+  SpeakerTwoName: 
+  SpeakerThreeName: 
