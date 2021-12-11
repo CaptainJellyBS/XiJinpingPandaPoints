@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum CoverType { poster, plushie}
+public enum CoverType { Poster, Plushie}
+public enum CanCoverType { Poster, Plushie, Both, Neither}
 public class ObjectArea : MonoBehaviour
 {
     public GameObject toPlace, preview;

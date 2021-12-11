@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &2329593338442676234
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3557884814786938551, guid: 48f86102d1ca3ee48be126eb70c1e690, type: 3}
+      propertyPath: m_Name
+      value: Taiwan Invasion Desk
+      objectReference: {fileID: 0}
+    - target: {fileID: 3557884814786938552, guid: 48f86102d1ca3ee48be126eb70c1e690, type: 3}
+      propertyPath: m_Size.x
+      value: 0.58
+      objectReference: {fileID: 0}
+    - target: {fileID: 3557884814786938552, guid: 48f86102d1ca3ee48be126eb70c1e690, type: 3}
+      propertyPath: m_Size.y
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3557884814786938552, guid: 48f86102d1ca3ee48be126eb70c1e690, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 0.58
+      objectReference: {fileID: 0}
+    - target: {fileID: 3557884814786938552, guid: 48f86102d1ca3ee48be126eb70c1e690, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3557884814786938553, guid: 48f86102d1ca3ee48be126eb70c1e690, type: 3}
+      propertyPath: text
+      value: Denial of Taiwan Invasion (draft)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3557884814786938555, guid: 48f86102d1ca3ee48be126eb70c1e690, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c6b337f3c6d43254287fd8a20821c6e3, type: 3}
+    - target: {fileID: 3557884814786938556, guid: 48f86102d1ca3ee48be126eb70c1e690, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3557884814786938556, guid: 48f86102d1ca3ee48be126eb70c1e690, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.0898218
+      objectReference: {fileID: 0}
+    - target: {fileID: 3557884814786938556, guid: 48f86102d1ca3ee48be126eb70c1e690, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.87619495
+      objectReference: {fileID: 0}
+    - target: {fileID: 3557884814786938556, guid: 48f86102d1ca3ee48be126eb70c1e690, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3557884814786938556, guid: 48f86102d1ca3ee48be126eb70c1e690, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3557884814786938556, guid: 48f86102d1ca3ee48be126eb70c1e690, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3557884814786938556, guid: 48f86102d1ca3ee48be126eb70c1e690, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3557884814786938556, guid: 48f86102d1ca3ee48be126eb70c1e690, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3557884814786938556, guid: 48f86102d1ca3ee48be126eb70c1e690, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3557884814786938556, guid: 48f86102d1ca3ee48be126eb70c1e690, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3557884814786938556, guid: 48f86102d1ca3ee48be126eb70c1e690, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 48f86102d1ca3ee48be126eb70c1e690, type: 3}

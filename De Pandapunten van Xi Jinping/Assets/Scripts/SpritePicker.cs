@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PosterSpritePicker : MonoBehaviour
+public class SpritePicker : MonoBehaviour
 {
     public Sprite[] sprites;
 
